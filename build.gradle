@@ -161,27 +161,44 @@ repositories {
 }
 
 dependencies {
-    // Specify the version of Minecraft to use.
-    // Any artifact can be supplied so long as it has a "userdev" classifier artifact and is a compatible patcher artifact.
-    // The "userdev" classifier will be requested and setup by ForgeGradle.
-    // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
-    // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    compileOnly "org.jetbrains:annotations:24.0.0"
 
-    // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
-    // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    // lombok
+    compileOnly "org.projectlombok:lombok:${project.lombok_version}"
+    annotationProcessor "org.projectlombok:lombok:${project.lombok_version}"
 
-    // Example mod dependency using a mod jar from ./libs with a flat dir repository
-    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
-    // The group id is ignored when searching -- in this case, it is "blank"
-    // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+    // ProbeJS
+    runtimeOnly("curse.maven:probejs-585406:5227399")
 
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    // JEI
+    compileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    compileOnly runtimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+
+    // EMI
+    compileOnly("curse.maven:emi-580555:${emi_version}")
+    compileOnly runtimeOnly("curse.maven:emi-580555:${emi_version}")
+
+    // KubeJS
+    compileOnly runtimeOnly("curse.maven:kubejs-238086:${kubejs_version}")
+
+    // Jade
+    compileOnly runtimeOnly("curse.maven:jade-324717:${jade_version}")
+
+    // The one probe
+    compileOnly runtimeOnly("curse.maven:the-one-probe-245211:${top_version}") {transitive = false}
+
+    // Mekanism
+    runtimeOnly("curse.maven:mekanism-268560:${mekanism_version}")
+
+    // Addons for testing
+    compileOnly runtimeOnly("curse.maven:applied-energistics-2-223794:${ae2_version}")
+    compileOnly runtimeOnly("curse.maven:guideme-1173950:${guideme_version}")
+
+    // ExperienceFluids
+    runtimeOnly("curse.maven:mob-grinding-utils-254241:${project.MGU}")
+    runtimeOnly("curse.maven:titanium-287342:${titanium}")
+    runtimeOnly("curse.maven:industrial-foregoing-266515:${project.IF}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -190,11 +207,22 @@ dependencies {
 // See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
-            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
-            forge_version: forge_version, forge_version_range: forge_version_range,
-            loader_version_range: loader_version_range,
-            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-            mod_authors: mod_authors, mod_description: mod_description,
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            forge_version          : forge_version,
+            forge_version_range    : forge_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description,
+            mod_github             : mod_github,
+            mod_issues             : mod_issues,
+            ae2_version            : ae2_version,
+            icon                   : icon,
+            pack_format_number     : pack_format_number
     ]
     inputs.properties replaceProperties
 

@@ -1,8 +1,13 @@
 package com.serjog.appexp;
 
+import appeng.api.behaviors.ContainerItemStrategy;
+import appeng.api.behaviors.GenericSlotCapacities;
+import appeng.api.storage.StorageCells;
+import appeng.parts.automation.StackWorldBehaviors;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -65,8 +70,6 @@ public class AppliedExperienced
         bus.addListener(ExperienceAcceptorPart::registerCapability);
 
         MinecraftForge.EVENT_BUS.register(this);
-
-        context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     public static ResourceLocation id(String path) {
